@@ -10,8 +10,10 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage'),
-      require('@angular-devkit/build-angular/plugins/karma')
+      require('@angular-devkit/build-angular/plugins/karma'),
+      require('karma-edgium-launcher')
     ],
+    browsers: ['Edge', 'Edge_without_security'],
     client: {
       jasmine: {
         // you can add configuration options for Jasmine here
@@ -21,23 +23,32 @@ module.exports = function (config) {
       },
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
+    
     jasmineHtmlReporter: {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
       dir: require('path').join(__dirname, './coverage/electron-app'),
+      base: 'Edge',
       subdir: '.',
       reporters: [
         { type: 'html' },
         { type: 'text-summary' }
       ]
     },
+    customLaunchers: {
+      Edge_without_security: {
+        base: 'Edge',
+        flags: ['--disable-web-security', '--disable-site-isolation-trials']
+      }
+    },
+    
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['Edge', 'Edge_without_security'],
     singleRun: false,
     restartOnFileChange: true
   });
